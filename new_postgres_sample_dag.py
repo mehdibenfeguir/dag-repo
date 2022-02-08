@@ -26,9 +26,9 @@ from databuilder.task.task import DefaultTask
 from databuilder.transformer.base_transformer import NoopTransformer
 
 dag_args = {
-    'max_active_tasks': 10,
+    #'max_active_tasks': 10,
     # One dagrun at a time
-    'max_active_runs': 1,
+    #'max_active_runs': 1,
     # 4AM, 4PM PST
     'schedule_interval': '0 11 * * *',
     'catchup': False
