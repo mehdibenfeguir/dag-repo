@@ -74,11 +74,11 @@ OPTIONAL_TABLE_NAMES = 'films'
 
 
 def connection_string():
-    user = 'newuser'
+    user = 'ajeer_logistics_dbuser'
     password = 'password'
-    host = 'localhost'
-    port = '5432'
-    db = 'amundsen'
+    host = '10.60.172.20'
+    port = '5000'
+    db = 'Ps7fYqBLx4Z2Ud8Weqv2'
     return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
 
 
