@@ -55,8 +55,8 @@ neo4j_endpoint = NEO4J_ENDPOINT
 neo4j_user = 'neo4j'
 neo4j_password = 'test'
 
-es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'localhost')
-neo_host = os.getenv('CREDENTIALS_NEO4J_PROXY_HOST', 'localhost')
+es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'poc-amundsen-elasticsearch.tamkeen.live')
+neo_host = os.getenv('CREDENTIALS_NEO4J_PROXY_HOST', 'poc-amundsen-neo4j.tamkeen.live')
 
 es_port = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_PORT', 9200)
 neo_port = os.getenv('CREDENTIALS_NEO4J_PROXY_PORT', 7687)
@@ -103,9 +103,9 @@ def create_table_extract_job():
         #f'publisher.neo4j.{neo4j_csv_publisher.JOB_PUBLISH_TAG}': 'unique_tag',  # should use unique tag here like {ds}
     })
     job = DefaultJob(conf=job_config,
-                     task=DefaultTask(extractor=PostgresMetadataExtractor())
-                     #, loader=FsNeo4jCSVLoader()),
-                     #publisher=Neo4jCsvPublisher())
+                     task=DefaultTask(extractor=PostgresMetadataExtractor()
+                     , loader=FsNeo4jCSVLoader()),
+                     publisher=Neo4jCsvPublisher())
     job.launch()
 
 
