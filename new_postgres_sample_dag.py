@@ -103,10 +103,9 @@ def create_table_extract_job():
         #f'publisher.neo4j.{neo4j_csv_publisher.JOB_PUBLISH_TAG}': 'unique_tag',  # should use unique tag here like {ds}
     })
     job = DefaultJob(conf=job_config,
-                     task=DefaultTask(extractor=PostgresMetadataExtractor()
+                     task=DefaultTask(extractor=PostgresMetadataExtractor())
                      # ,loader=FsNeo4jCSVLoader()),
                      #publisher=Neo4jCsvPublisher()
-                     )
     job.launch()
 
 
