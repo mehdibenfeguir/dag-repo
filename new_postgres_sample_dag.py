@@ -104,7 +104,7 @@ def create_table_extract_job():
     })
     job = DefaultJob(conf=job_config,
                      task=DefaultTask(extractor=PostgresMetadataExtractor(),
-                loader=AnyLoader()))
+                 loader=FsNeo4jCSVLoader()))
                   #   ,publisher=Neo4jCsvPublisher()
     job.launch()
 
