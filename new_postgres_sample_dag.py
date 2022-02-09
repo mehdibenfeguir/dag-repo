@@ -110,6 +110,7 @@ def create_table_extract_job():
 
 
 def create_es_publisher_sample_job():
+    where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
     # loader saves data to this location and publisher reads it from here
     extracted_search_data_path = '/var/tmp/amundsen/search_data.json'
 
