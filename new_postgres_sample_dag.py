@@ -114,7 +114,7 @@ def create_es_publisher_sample_job():
     extracted_search_data_path = '/var/tmp/amundsen/search_data.json'
 
     task = DefaultTask(loader=FSElasticsearchJSONLoader(),
-                       extractor=Neo4jSearchDataExtractor(),
+                       #extractor=Neo4jSearchDataExtractor(),
                        transformer=NoopTransformer())
 
     # elastic search client instance
@@ -130,8 +130,8 @@ def create_es_publisher_sample_job():
         f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.GRAPH_URL_CONFIG_KEY}': neo4j_endpoint,
         f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.MODEL_CLASS_CONFIG_KEY}':
             'databuilder.models.table_elasticsearch_document.TableESDocument',
-        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_USER}': neo4j_user,
-        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_PW}': neo4j_password,
+        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_USER}': neo4j_user,
+        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_PW}': neo4j_password,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_MODE_CONFIG_KEY}': 'w',
         f'publisher.elasticsearch.{ElasticsearchPublisher.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
