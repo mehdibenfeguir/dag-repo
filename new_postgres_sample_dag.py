@@ -76,7 +76,7 @@ OPTIONAL_TABLE_NAMES = 'films'
 def connection_string():
     user = 'ajeer_logistics_dbuser'
     password = 'Ps7fYqBLx4Z2Ud8Weqv2'
-    host = '10.60.172.20'
+    host = '10.60.92.101'
     port = '5000'
     db = 'ajeer_logistics_db'
     return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
