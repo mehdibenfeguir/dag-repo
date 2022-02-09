@@ -48,7 +48,7 @@ default_args = {
 }
 
 # NEO4J cluster endpoints
-NEO4J_ENDPOINT = 'bolt://poc-amundsen-neo4j:7687'
+NEO4J_ENDPOINT = 'bolt://poc-amundsen-neo4j.tamkeen.live:7687'
 
 neo4j_endpoint = NEO4J_ENDPOINT
 
