@@ -85,9 +85,9 @@ def connection_string():
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
 
-    tmp_folder = '/var/tmp/amundsen/table_metadata'
-    node_files_folder = f'{tmp_folder}/nodes/'
-    relationship_files_folder = f'{tmp_folder}/relationships/'
+    tmp_folder = '/'
+    node_files_folder = f'{tmp_folder}'
+    relationship_files_folder = f'{tmp_folder}'
 
     job_config = ConfigFactory.from_dict({
         f'extractor.postgres_metadata.{PostgresMetadataExtractor.WHERE_CLAUSE_SUFFIX_KEY}': where_clause_suffix,
@@ -151,7 +151,7 @@ def create_es_publisher_sample_job():
     job.launch()
 
 
-with DAG('amundsen_databuilder', default_args=default_args, **dag_args) as dag:
+with DAG('amundsen_databuilder_gcp', default_args=default_args, **dag_args) as dag:
     postgres_table_extract_job = PythonOperator(
         task_id='postgres_table_extract_job',
         python_callable=create_table_extract_job
