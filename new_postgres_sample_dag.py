@@ -68,7 +68,7 @@ SUPPORTED_SCHEMAS = ['public']
 # String format - ('schema1', schema2', .... 'schemaN')
 SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
 
-OPTIONAL_TABLE_NAMES = 'films'
+OPTIONAL_TABLE_NAMES = 'applications'
 
 
 def connection_string():
