@@ -52,11 +52,11 @@ NEO4J_ENDPOINT = 'bolt://poc-amundsen-neo4j.tamkeen.live:7687'
 
 neo4j_endpoint = NEO4J_ENDPOINT
 
-neo4j_user = ''
-neo4j_password = ''
+neo4j_user = 'neo4j'
+neo4j_password = 'mypass'
 
 es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'poc-elasticsearch.tamkeen.live ')
-neo_host = os.getenv('CREDENTIALS_NEO4J_PROXY_HOST', 'poc-amundsen-neo4j.tamkeen.live')
+neo_host = os.getenv('CREDENTIALS_NEO4J_PROXY_HOST', '34.148.165.61')
 
 es_port = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_PORT', 9200)
 neo_port = os.getenv('CREDENTIALS_NEO4J_PROXY_PORT', 7687)
@@ -95,17 +95,17 @@ def create_table_extract_job():
         f'extractor.postgres_metadata.extractor.sqlalchemy.{SQLAlchemyExtractor.CONN_STRING}': connection_string(),
         f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.NODE_DIR_PATH}': node_files_folder,
         f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.RELATION_DIR_PATH}': relationship_files_folder,
-        #f'publisher.neo4j.{neo4j_csv_publisher.NODE_FILES_DIR}': node_files_folder,
-        #f'publisher.neo4j.{neo4j_csv_publisher.RELATION_FILES_DIR}': relationship_files_folder,
-        #f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_END_POINT_KEY}': neo4j_endpoint,
-        #f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_USER}': neo4j_user,
-        #f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_PASSWORD}': neo4j_password,
-        #f'publisher.neo4j.{neo4j_csv_publisher.JOB_PUBLISH_TAG}': 'unique_tag',  # should use unique tag here like {ds}
+        f'publisher.neo4j.{neo4j_csv_publisher.NODE_FILES_DIR}': node_files_folder,
+        f'publisher.neo4j.{neo4j_csv_publisher.RELATION_FILES_DIR}': relationship_files_folder,
+        f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_END_POINT_KEY}': neo4j_endpoint,
+        f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_USER}': neo4j_user,
+        f'publisher.neo4j.{neo4j_csv_publisher.NEO4J_PASSWORD}': neo4j_password,
+        f'publisher.neo4j.{neo4j_csv_publisher.JOB_PUBLISH_TAG}': 'unique_tag',  # should use unique tag here like {ds}
     })
     job = DefaultJob(conf=job_config,
                      task=DefaultTask(extractor=PostgresMetadataExtractor(),
-                 loader=FsNeo4jCSVLoader()))
-                  #   ,publisher=Neo4jCsvPublisher()
+                 loader=FsNeo4jCSVLoader())
+                     ,publisher=Neo4jCsvPublisher())
     job.launch()
 
 
@@ -115,7 +115,7 @@ def create_es_publisher_sample_job():
     extracted_search_data_path = '/var/tmp/amundsen/search_data.json'
 
     task = DefaultTask(loader=FSElasticsearchJSONLoader(),
-                       #extractor=Neo4jSearchDataExtractor(),
+                       extractor=Neo4jSearchDataExtractor(),
                        extractor=PostgresMetadataExtractor(),
                        transformer=NoopTransformer())
 
@@ -129,16 +129,16 @@ def create_es_publisher_sample_job():
     elasticsearch_index_alias = 'table_search_index'
 
     job_config = ConfigFactory.from_dict({
-        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.GRAPH_URL_CONFIG_KEY}': neo4j_endpoint,
-        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.MODEL_CLASS_CONFIG_KEY}':
-        #    'databuilder.models.table_elasticsearch_document.TableESDocument',
-        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_USER}': neo4j_user,
-        #f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_PW}': neo4j_password,
+        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.GRAPH_URL_CONFIG_KEY}': neo4j_endpoint,
+        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.MODEL_CLASS_CONFIG_KEY}':
+            'databuilder.models.table_elasticsearch_document.TableESDocument',
+        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_USER}': neo4j_user,
+        f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_PW}': neo4j_password,
          f'extractor.postgres_metadata.{PostgresMetadataExtractor.WHERE_CLAUSE_SUFFIX_KEY}': where_clause_suffix,
         f'extractor.postgres_metadata.{PostgresMetadataExtractor.USE_CATALOG_AS_CLUSTER_NAME}': True,
         f'extractor.postgres_metadata.extractor.sqlalchemy.{SQLAlchemyExtractor.CONN_STRING}': connection_string(),
-        #f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.NODE_DIR_PATH}': node_files_folder,
-        #f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.RELATION_DIR_PATH}': relationship_files_folder,
+        f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.NODE_DIR_PATH}': node_files_folder,
+        f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.RELATION_DIR_PATH}': relationship_files_folder,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_MODE_CONFIG_KEY}': 'w',
         f'publisher.elasticsearch.{ElasticsearchPublisher.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
