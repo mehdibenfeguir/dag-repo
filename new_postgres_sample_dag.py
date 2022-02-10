@@ -48,7 +48,7 @@ default_args = {
 }
 
 # NEO4J cluster endpoints
-NEO4J_ENDPOINT = 'neo4j+s://ed340c35.databases.neo4j.io:7687'
+NEO4J_ENDPOINT = 'neo4j+s://ed340c35.production-orch-0068.neo4j.io:7687'
 
 neo4j_endpoint = NEO4J_ENDPOINT
 
@@ -151,7 +151,7 @@ def create_es_publisher_sample_job():
     job.launch()
 
 
-with DAG('amundsen_databuilder_cloud_based', default_args=default_args, **dag_args) as dag:
+with DAG('amundsen_databuilder_cloud_based_new', default_args=default_args, **dag_args) as dag:
     postgres_table_extract_job = PythonOperator(
         task_id='postgres_table_extract_job',
         python_callable=create_table_extract_job
