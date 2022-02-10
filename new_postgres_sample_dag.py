@@ -82,6 +82,8 @@ def connection_string():
     return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
 
 
+
+
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
 
@@ -103,20 +105,17 @@ def create_table_extract_job():
         f'publisher.neo4j.{neo4j_csv_publisher.JOB_PUBLISH_TAG}': 'unique_tag',  # should use unique tag here like {ds}
     })
     job = DefaultJob(conf=job_config,
-                     task=DefaultTask(extractor=PostgresMetadataExtractor(),
-                 loader=FsNeo4jCSVLoader())
-                     ,publisher=Neo4jCsvPublisher())
+                     task=DefaultTask(extractor=PostgresMetadataExtractor(), loader=FsNeo4jCSVLoader()),
+                     publisher=Neo4jCsvPublisher())
     job.launch()
 
 
 def create_es_publisher_sample_job():
-    where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
     # loader saves data to this location and publisher reads it from here
     extracted_search_data_path = '/var/tmp/amundsen/search_data.json'
 
     task = DefaultTask(loader=FSElasticsearchJSONLoader(),
                        extractor=Neo4jSearchDataExtractor(),
-                       extractor=PostgresMetadataExtractor(),
                        transformer=NoopTransformer())
 
     # elastic search client instance
@@ -134,11 +133,6 @@ def create_es_publisher_sample_job():
             'databuilder.models.table_elasticsearch_document.TableESDocument',
         f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_USER}': neo4j_user,
         f'extractor.search_data.extractor.neo4j.{Neo4jExtractor.NEO4J_AUTH_PW}': neo4j_password,
-         f'extractor.postgres_metadata.{PostgresMetadataExtractor.WHERE_CLAUSE_SUFFIX_KEY}': where_clause_suffix,
-        f'extractor.postgres_metadata.{PostgresMetadataExtractor.USE_CATALOG_AS_CLUSTER_NAME}': True,
-        f'extractor.postgres_metadata.extractor.sqlalchemy.{SQLAlchemyExtractor.CONN_STRING}': connection_string(),
-        f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.NODE_DIR_PATH}': node_files_folder,
-        f'loader.filesystem_csv_neo4j.{FsNeo4jCSVLoader.RELATION_DIR_PATH}': relationship_files_folder,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
         f'loader.filesystem.elasticsearch.{FSElasticsearchJSONLoader.FILE_MODE_CONFIG_KEY}': 'w',
         f'publisher.elasticsearch.{ElasticsearchPublisher.FILE_PATH_CONFIG_KEY}': extracted_search_data_path,
@@ -159,7 +153,7 @@ def create_es_publisher_sample_job():
     job.launch()
 
 
-with DAG('amundsen_databuilder_gcp_neo4j', default_args=default_args, **dag_args) as dag:
+with DAG('amundsen_databuilder', default_args=default_args, **dag_args) as dag:
     postgres_table_extract_job = PythonOperator(
         task_id='postgres_table_extract_job',
         python_callable=create_table_extract_job
@@ -172,3 +166,4 @@ with DAG('amundsen_databuilder_gcp_neo4j', default_args=default_args, **dag_args
 
     # elastic search update run after table metadata has been updated
     postgres_table_extract_job >> postgres_es_index_job
+
