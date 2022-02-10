@@ -85,7 +85,7 @@ def connection_string():
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
 
-    tmp_folder = '/'
+    tmp_folder = '/tmp'
     node_files_folder = f'{tmp_folder}/nodes/'
     relationship_files_folder = f'{tmp_folder}/relationships/'
 
