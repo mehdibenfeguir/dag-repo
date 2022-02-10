@@ -86,8 +86,8 @@ def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
 
     tmp_folder = '/'
-    node_files_folder = f'{tmp_folder}'
-    relationship_files_folder = f'{tmp_folder}'
+    node_files_folder = f'{tmp_folder}/nodes/'
+    relationship_files_folder = f'{tmp_folder}/relationships/'
 
     job_config = ConfigFactory.from_dict({
         f'extractor.postgres_metadata.{PostgresMetadataExtractor.WHERE_CLAUSE_SUFFIX_KEY}': where_clause_suffix,
