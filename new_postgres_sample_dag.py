@@ -48,7 +48,7 @@ default_args = {
 }
 
 # NEO4J cluster endpoints
-NEO4J_ENDPOINT = 'bolt://poc-amundsen-neo4j.tamkeen.live:7687'
+NEO4J_ENDPOINT = 'bolt://34.148.165.61:7687'
 
 neo4j_endpoint = NEO4J_ENDPOINT
 
@@ -56,10 +56,8 @@ neo4j_user = 'neo4j'
 neo4j_password = 'mypass'
 
 es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'poc-elasticsearch.tamkeen.live')
-neo_host = os.getenv('CREDENTIALS_NEO4J_PROXY_HOST', '34.148.165.61')
 
 es_port = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_PORT', 9200)
-neo_port = os.getenv('CREDENTIALS_NEO4J_PROXY_PORT', 7687)
 
 es = Elasticsearch([
     {'host': es_host, 'port': es_port},
