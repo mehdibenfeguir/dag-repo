@@ -65,23 +65,26 @@ es = Elasticsearch([
 ])
 
 # TODO: user provides a list of schema for indexing
-# SUPPORTED_SCHEMAS = ['public']
+ SUPPORTED_SCHEMAS = ['public']
 # # String format - ('schema1', schema2', .... 'schemaN')
-# SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
+ SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
 
-# OPTIONAL_TABLE_NAMES = 'applications'
+ OPTIONAL_TABLE_NAMES = 'applications'
+
+connection = BaseHook.get_connection('bigquery_connection')
+
+        
+def connection_string():
+    user = connection.login
+    password = connection.password
+    host = connection.host
+    port = connection.port
+    db = connection.schema
+    return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
 
 
-# def connection_string():
-
-#     db = 'ajeer_logistics_db'
-#     return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
 
 
-
-def connection_string ():
-     return BaseHook.get_connection('bigquery_connection')
-     print(conn.get_extra())
 
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
