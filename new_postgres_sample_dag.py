@@ -48,12 +48,12 @@ default_args = {
 }
 
 # NEO4J cluster endpoints
-NEO4J_ENDPOINT = 'neo4j+s://ed340c35.production-orch-0068.neo4j.io:7687'
+NEO4J_ENDPOINT = 'bolt://34.148.165.61:7687'
 
 neo4j_endpoint = NEO4J_ENDPOINT
 
 neo4j_user = 'neo4j'
-neo4j_password = 'VOqR72r1MUsMfZA-UW21fGAghflwec988GXN5HSoerU'
+neo4j_password = 'mypass'
 
 es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'poc-elasticsearch.tamkeen.live')
 
