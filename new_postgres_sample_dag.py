@@ -79,8 +79,9 @@ es = Elasticsearch([
 
 
 
-def connection_string = BaseHook.get_connection('bigquery_connection')
-print(conn.get_extra())
+def connection_string ():
+     return BaseHook.get_connection('bigquery_connection')
+     print(conn.get_extra())
 
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
