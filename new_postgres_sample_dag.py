@@ -55,7 +55,7 @@ neo4j_endpoint = NEO4J_ENDPOINT
 neo4j_user = 'neo4j'
 neo4j_password = ''
 
-es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'poc-elasticsearch.tamkeen.live')
+es_host = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_HOST', 'amundsen-elasticsearch-master')
 
 es_port = os.getenv('CREDENTIALS_ELASTICSEARCH_PROXY_PORT', 9200)
 
