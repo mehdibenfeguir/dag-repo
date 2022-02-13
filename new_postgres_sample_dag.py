@@ -70,8 +70,9 @@ es = Elasticsearch([
 # SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
 # OPTIONAL_TABLE_NAMES = 'applications'
 
-connection = BaseHook.get_connection('bigquery_connection')  
+ 
 def connection_string():
+    connection = BaseHook.get_connection('bigquery_connection') 
     user = connection.login
     password = connection.password
     host = connection.host
