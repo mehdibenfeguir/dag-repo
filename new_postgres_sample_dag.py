@@ -66,9 +66,10 @@ es = Elasticsearch([
 
 # TODO: user provides a list of schema for indexing
 SUPPORTED_SCHEMAS = ['public']
-# # String format - ('schema1', schema2', .... 'schemaN')
- SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
-# OPTIONAL_TABLE_NAMES = 'applications'
+# String format - ('schema1', schema2', .... 'schemaN')
+SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
+
+OPTIONAL_TABLE_NAMES = ''
 
  
 def connection_string():
