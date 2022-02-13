@@ -24,6 +24,7 @@ from databuilder.publisher.elasticsearch_publisher import ElasticsearchPublisher
 from databuilder.publisher.neo4j_csv_publisher import Neo4jCsvPublisher
 from databuilder.task.task import DefaultTask
 from databuilder.transformer.base_transformer import NoopTransformer
+from airflow.hooks.base_hook import BaseHook
 
 dag_args = {
     #'max_active_tasks': 10,
@@ -64,23 +65,22 @@ es = Elasticsearch([
 ])
 
 # TODO: user provides a list of schema for indexing
-SUPPORTED_SCHEMAS = ['public']
-# String format - ('schema1', schema2', .... 'schemaN')
-SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
+# SUPPORTED_SCHEMAS = ['public']
+# # String format - ('schema1', schema2', .... 'schemaN')
+# SUPPORTED_SCHEMA_SQL_IN_CLAUSE = "('{schemas}')".format(schemas="', '".join(SUPPORTED_SCHEMAS))
 
-OPTIONAL_TABLE_NAMES = 'applications'
+# OPTIONAL_TABLE_NAMES = 'applications'
 
 
-def connection_string():
-    user = 'ajeer_logistics_dbuser'
-    password = 'Ps7fYqBLx4Z2Ud8Weqv2'
-    host = '10.60.92.101'
-    port = '5000'
-    db = 'ajeer_logistics_db'
-    return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
+# def connection_string():
+
+#     db = 'ajeer_logistics_db'
+#     return "postgresql://%s:%s@%s:%s/%s" % (user, password, host, port, db)
 
 
 
+def connection_string = BaseHook.get_connection('bigquery_connection')
+print(conn.get_extra())
 
 def create_table_extract_job():
     where_clause_suffix = f'st.schemaname in {SUPPORTED_SCHEMA_SQL_IN_CLAUSE}'
