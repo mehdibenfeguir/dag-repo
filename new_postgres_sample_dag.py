@@ -73,7 +73,7 @@ OPTIONAL_TABLE_NAMES = ''
 
  
 def connection_string():
-    connection = BaseHook.get_connection('bigquery_connection') 
+    connection = BaseHook.get_connection('ajeer_logistics') 
     user = connection.login
     password = connection.password
     host = connection.host
